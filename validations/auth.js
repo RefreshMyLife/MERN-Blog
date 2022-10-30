@@ -15,6 +15,6 @@ export const loginValidation = [
 export const postCreateValidation = [
   body('title', 'Введите заголовок').isLength({ min: 5 }).isString(),
   body('text', 'Введите текст').isLength({ min: 6 }).isString(),
-  body('tags', 'Неверный формат тэгов').optional().isArray(),
+  body('tags', 'Неверный формат тэгов').optional().isString(),
   body('imageUrl', 'Пароль должен быть не меньше 6 символов').optional().isString(),
 ];

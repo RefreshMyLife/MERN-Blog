@@ -5,6 +5,11 @@ import bcrypt from 'bcrypt';
 
 export const registration = async (request, response) => {
   try {
+    if (request.body.email) {
+      response.status(400).json({
+        message: 'Такой email уже существует, пожалуйста введите новый',
+      });
+    }
     const password = request.body.password;
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);

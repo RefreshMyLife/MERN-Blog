@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import multer from 'multer';
-
+import cors from 'cors';
 import { loginValidation, registerValidation, postCreateValidation } from './validations/auth.js';
 import { UserControllers, PostControllers } from './controlers/index.js';
 import { handleValiidationErrors, checkAuth } from './middleware/index.js';
@@ -34,6 +34,8 @@ const upload = multer({ storage });
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
+app.use(cors());
+
 // request - запрос с фронта (от клиента)
 // response - ответ на запрос клиента
 app.get('/', (request, response) => {
@@ -58,6 +60,8 @@ app.post(
 );
 
 app.get('/posts', PostControllers.getAll);
+
+app.get('/posts/tags', PostControllers.getLastTags);
 
 app.get('/posts/:id', PostControllers.getOne);
 

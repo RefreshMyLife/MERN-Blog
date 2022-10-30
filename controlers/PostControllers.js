@@ -20,6 +20,22 @@ export const create = async (request, response) => {
   }
 };
 
+export const getLastTags = async (request, response) => {
+  try {
+    const post = await PostModel.find().limit(5).exec();
+    const tags = post
+      .map((obj) => obj.tags)
+      .flat()
+      .slice(0, 5);
+
+    response.json(tags);
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({
+      message: 'Не удалось получить статьи', 
+    });
+  }
+};
 export const getAll = async (request, response) => {
   try {
     const post = await PostModel.find().populate('user').exec();
@@ -35,7 +51,7 @@ export const getAll = async (request, response) => {
 export const getOne = async (request, response) => {
   try {
     const postId = request.params.id;
-    await PostModel.findOneAndUpdate(
+    PostModel.findOneAndUpdate(
       {
         _id: postId,
       },
@@ -58,7 +74,7 @@ export const getOne = async (request, response) => {
         }
         response.json(doc);
       },
-    );
+    ).populate('user');
   } catch (error) {
     console.log(error);
     response.status(500).json({
